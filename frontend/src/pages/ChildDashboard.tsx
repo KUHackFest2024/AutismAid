@@ -69,7 +69,19 @@ const ChildDashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-100 to-purple-100 p-8">
+    <div className="min-h-screen bg-gradient-to-b from-blue-100 to-purple-100 p-8 relative">
+      {/* <Button
+        className="text-lg text-black bg-white hover:bg-white"
+        onClick={() => navigate("/")}
+      >
+        Back
+      </Button> */}
+      <Button
+        className="text-lg text-black bg-white hover:bg-white absolute right-10"
+        onClick={() => navigate("/")}
+      >
+        logout
+      </Button>
       <motion.h1
         className="text-4xl font-bold text-center text-purple-700 mb-8"
         initial={{ opacity: 0, y: -20 }}

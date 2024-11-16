@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Smile, Users, BookOpen } from "lucide-react";
+import { Smile, Gamepad, Music } from "lucide-react";
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -15,14 +15,14 @@ const HomePage: React.FC = () => {
       description: "Discover feelings through fun activities",
     },
     {
-      icon: Users,
-      title: "Make Friends",
-      description: "Connect with other amazing kids",
+      icon: Gamepad,
+      title: "Emotion Matching Games",
+      description: "Play emotion Matching games",
     },
     {
-      icon: BookOpen,
-      title: "Cool Stories",
-      description: "Explore exciting tales and adventures",
+      icon: Music,
+      title: "Relaxing Music",
+      description: "Explore Relaxing music and beat",
     },
   ];
 
@@ -39,13 +39,13 @@ const HomePage: React.FC = () => {
               onClick={() => navigate("/login")}
               className="w-full md:w-auto"
             >
-              Log In
+              Login
             </Button>
             <Button
               onClick={() => navigate("/register")}
               className="w-full md:w-auto bg-purple-500 hover:bg-purple-600"
             >
-              Join the Fun!
+              Register
             </Button>
           </div>
         </nav>
@@ -67,7 +67,7 @@ const HomePage: React.FC = () => {
             </p>
             <Button
               size="lg"
-              onClick={() => navigate("/register")}
+              onClick={() => navigate("/child-dashboard")}
               className="text-lg px-6 py-3 rounded-full bg-green-500 hover:bg-green-600 transition-colors"
             >
               Start Your Adventure
@@ -118,18 +118,18 @@ const HomePage: React.FC = () => {
           <div className="space-y-4 md:space-y-0 md:space-x-4">
             <Button
               size="lg"
-              onClick={() => navigate("/register")}
+              onClick={() => navigate("/child-dashboard")}
               className="w-full md:w-auto text-lg px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-purple-700"
             >
-              Create Your Profile
+              I'm Child
             </Button>
             <Button
               size="lg"
               variant="outline"
-              onClick={() => navigate("/login")}
+              onClick={() => navigate("/caretaker-dashboard")}
               className="w-full md:w-auto text-lg px-6 py-3 text-purple-700 border-purple-400 hover:bg-purple-100"
             >
-              I'm Already a Member
+              I'm Caretaker
             </Button>
           </div>
         </section>
