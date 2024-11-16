@@ -1,6 +1,6 @@
-# AutismAid
+# EmoBridge
 
-AutismAid is a project aimed at providing assistance to individuals with autism spectrum disorder (ASD) through the use of technology, including facial recognition, emotion detection, and other supportive tools to help improve communication, social interaction, and overall quality of life.
+EmoBridge is a project aimed at providing assistance to individuals with autism spectrum disorder (ASD) through the use of technology, including facial recognition, emotion detection, and other supportive tools to help improve communication, social interaction, and overall quality of life.
 
 This repository contains the backend code for the AutismAid application, which integrates machine learning, AI models, and various technologies to offer real-time support for users with autism.
 
