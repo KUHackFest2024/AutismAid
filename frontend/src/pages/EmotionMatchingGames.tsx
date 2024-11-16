@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -10,132 +10,69 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ArrowLeft, Video, VideoOff } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 const questions = [
   {
     id: 1,
-    question: "How does this face feel?",
-    image:
-      "https://as2.ftcdn.net/v2/jpg/02/46/14/95/1000_F_246149544_RZIU2J7fQKl9JVWZBeSvJHUCRtdjTqAl.jpg",
+    question: "What is this person feeling?",
+    image: "/happy.jpg",
     options: [
-      { text: "Super Happy", emoji: "😊", correct: true },
-      { text: "Big Sad", emoji: "😢", correct: false },
-      { text: "Grumpy Face", emoji: "😠", correct: false },
-      { text: "Wow Face", emoji: "😲", correct: false },
+      { text: "Sad", emoji: "😢", correct: false },
+      { text: "Angry", emoji: "😠", correct: false },
+      { text: "Confused", emoji: "😕", correct: false },
+      { text: "Happy", emoji: "😊", correct: true },
     ],
   },
   {
     id: 2,
-    question: "What's this face doing?",
-    image:
-      "https://gratisography.com/wp-content/uploads/2022/10/gratisography-scared-14-free-stock-photo-1170x780.jpg",
+    question: "How does this person feel?",
+    image: "/scared.jpg",
     options: [
-      { text: "Super Excited", emoji: "🤩", correct: false },
-      { text: "Uh-oh Scared", emoji: "😨", correct: true },
-      { text: "Yucky Face", emoji: "🤢", correct: false },
-      { text: "Sleepy Time", emoji: "😴", correct: false },
+      { text: "Excited", emoji: "🤩", correct: false },
+      { text: "Scared", emoji: "😢", correct: true },
+      { text: "Surprised", emoji: "😲", correct: false },
+      { text: "Bored", emoji: "😐", correct: false },
+    ],
+  },
+  {
+    id: 3,
+    question: "What emotion is this person showing?",
+    image: "/angry.jpg",
+    options: [
+      { text: "Happy", emoji: "😊", correct: false },
+      { text: "Scared", emoji: "😨", correct: false },
+      { text: "Angry", emoji: "😠", correct: true },
+      { text: "Excited", emoji: "🤩", correct: false },
+    ],
+  },
+  {
+    id: 4,
+    question: "What does this person feel?",
+    image: "/Scared2.jpg",
+    options: [
+      { text: "Happy", emoji: "😊", correct: false },
+      { text: "Scared", emoji: "😨", correct: true },
+      { text: "Angry", emoji: "😠", correct: false },
+      { text: "Sleepy!", emoji: "😴", correct: false },
     ],
   },
 ];
-
-// function useVideoStream() {
-//   const [emotion, setEmotion] = useState("Unknown");
-//   const videoRef = useRef(null);
-
-//   useEffect(() => {
-//     const fetchStream = async () => {
-//       const response = await fetch('http://localhost:8000/video_feed');
-//       const reader = response?.body?.getReader();
-//       let chunks = [];
-
-//       while (true) {
-//         let done1 = undefined
-//         let value1 = undefined
-//         if(reader != undefined){
-//           const { done, value } = await reader.read();
-//           done1 = done
-//           value1 = value
-//         }
-//         if (done1) break;
-
-//         chunks.push(value1);
-//         const data = new TextDecoder().decode(value1);
-
-//         // Check if we have a new image frame
-//         if (data.includes('Content-Type: image/jpeg')) {
-//           const blob = new Blob(chunks, { type: 'image/jpeg' });
-//           const url = URL.createObjectURL(blob);
-
-//           // Update the video element's source
-//           if (videoRef.current) {
-//             videoRef.current.src = url;
-//           }
-//           chunks = []; // Reset chunks after processing an image
-//         }
-
-//         // Check if we have an emotion text part
-//         if (data.includes('Content-Type: text/plain')) {
-//           const emotionText = data.split('\r\n\r\n')[1]?.trim();
-//           if (emotionText) {
-//             setEmotion(emotionText);
-//           }
-//           chunks = []; // Reset chunks after processing text
-//         }
-//       }
-//     };
-
-//     fetchStream();
-//   }, []);
-
-//   return { emotion, videoRef };
-// }
 
 const EmotionMatchingGames: React.FC = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [feedbackMessage, setFeedbackMessage] = useState("");
   const [showFeedback, setShowFeedback] = useState(false);
-  const [isCameraOn, setIsCameraOn] = useState(true);
-  // const videoRef = useRef<HTMLVideoElement>(null);
-  const navigate = useNavigate();
-
-  // const { emotion, videoRef } = useVideoStream();
-
-  // const setupDevices = async () => {
-  //   try {
-  //     const stream = await navigator.mediaDevices.getUserMedia({
-  //       video: true,
-  //       audio: true,
-  //     });
-  //     if (videoRef.current) {
-  //       videoRef.current.srcObject = stream;
-  //     }
-  //   } catch (err) {
-  //     console.error("Oopsie! Can't see your happy face:", err);
-  //   }
-  // };
-
-  // const stopDevices = () => {
-  //   if (videoRef.current && videoRef.current.srcObject) {
-  //     const videoStream = videoRef.current.srcObject as MediaStream;
-  //     videoStream.getTracks().forEach((track) => track.stop());
-  //   }
-  // };
-
-  useEffect(() => {
-    // setupDevices();
-    // return () => {
-    // stopDevices();
-    // navigate(0)
-    // };
-  }, []);
-
   const [emotion, setEmotion] = useState("Unknown");
+  const [correctCount, setCorrectCount] = useState(0);
+  const [incorrectCount, setIncorrectCount] = useState(0);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEmotion = async () => {
       try {
-        const response = await fetch("http://localhost:8000/get_emotion");
+        const response = await fetch("http://192.168.50.71:8000/get_emotion");
         if (response.ok) {
           const data = await response.text();
           setEmotion(data);
@@ -145,20 +82,42 @@ const EmotionMatchingGames: React.FC = () => {
       }
     };
 
-    // Poll the emotion data every second
     const interval = setInterval(fetchEmotion, 1000);
 
-    // Cleanup interval on component unmount
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const preloadImages = async () => {
+      const imagePromises = questions.map((question) => {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.src = question.image;
+          img.onload = resolve;
+          img.onerror = reject;
+        });
+      });
+
+      try {
+        await Promise.all(imagePromises);
+        setImagesLoaded(true);
+      } catch (error) {
+        console.error("Error preloading images:", error);
+      }
+    };
+
+    preloadImages();
   }, []);
 
   const handleAnswer = (correct: boolean) => {
     if (correct) {
       setFeedbackMessage("Yay! You're a feeling finder superstar! 🌟🎉");
+      setCorrectCount((prevCount) => prevCount + 1);
     } else {
       setFeedbackMessage(
-        "Oopsie daisy! Let's try again, you're doing great! 🌈💪"
+        "Oopsie daisy! Let's try again, you're doing great! 💪"
       );
+      setIncorrectCount((prevCount) => prevCount + 1);
     }
     setShowFeedback(true);
     if (correct) {
@@ -184,22 +143,25 @@ const EmotionMatchingGames: React.FC = () => {
   };
 
   const quitGame = async () => {
-    // stopDevices();
     const stopVideo = async () => {
-      const res = await fetch("http://localhost:8000/video_feed_exit", {
+      const res = await fetch("http://192.168.50.71:8000/video_feed_exit", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json", // Make sure to set the content type
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          correct: "12",
-          incorrect: "32",
+          correct: correctCount.toString(),
+          incorrect: incorrectCount.toString(),
         }),
       });
     };
-    stopVideo();
+    await stopVideo();
     navigate("/child-dashboard");
   };
+
+  if (!imagesLoaded) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-100 to-purple-100 p-8 relative">
@@ -214,25 +176,12 @@ const EmotionMatchingGames: React.FC = () => {
       </Button>
 
       <div className="absolute top-4 right-4 w-64 h-48 rounded-lg overflow-hidden shadow-lg border-4 border-purple-400 bg-gray-100">
-        {/* <video
-          ref={videoRef}
-          autoPlay
-          playsInline
-          muted
-          className={`w-full h-full object-cover ${isCameraOn ? "" : "hidden"}`}
-        /> */}
         <h1>Emotion: {emotion}</h1>
-        {/* <img ref={videoRef} alt="Video Stream" style={{ width: '640px', height: '480px' }} /> */}
         <img
-          src={"http://localhost:8000/video_feed"}
+          src={"http://192.168.50.71:8000/video_feed"}
           alt="Video Feed"
           className="w-full h-full object-cover"
         />
-        {/* {!isCameraOn && (
-          <div className="w-full h-full flex items-center justify-center">
-            <VideoOff className="h-12 w-12 text-gray-400" />
-          </div>
-        )} */}
       </div>
 
       <motion.h1
